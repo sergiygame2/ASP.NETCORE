@@ -29,5 +29,10 @@ namespace PagesCRUD.Data
         }
 
         public DbSet<Page> Page { get; set; }
+
+        public DbSet<RelatedPages> RelatedPages { get; set; }
+
+        public DbSet<NavLink> NavLink { get; set; }
+
     }
 }

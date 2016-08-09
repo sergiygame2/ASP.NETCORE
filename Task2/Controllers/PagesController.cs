@@ -32,7 +32,7 @@ namespace PagesCRUD.Controllers
             pagesVM.currentPage = String.IsNullOrEmpty(currPage) ? 1 : Int32.Parse(currPage);
             ViewBag.PageParam = pagesVM.currentPage;
 
-            //pagging
+            //pagination
             pagesVM.numberOfObjectsPerPage = 10;
             double am = (pagesVM.pagesAmount / pagesVM.numberOfObjectsPerPage);
             if ((pagesVM.pagesAmount % pagesVM.numberOfObjectsPerPage) > 4 && pagesVM.pagesAmount > pagesVM.numberOfObjectsPerPage)
@@ -111,7 +111,7 @@ namespace PagesCRUD.Controllers
             ///END SORTING
             return View(pagesVM);
         }
-
+        
         // GET: Pages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -127,6 +127,24 @@ namespace PagesCRUD.Controllers
             }
 
             return View(page);
+        }
+
+        [HttpPost]
+        public string CheckBoxRP(IEnumerable<Page> rp)
+        {
+            var list = new List<Page>();
+            if (rp.Count(relp => relp.IsSelected) > 0)
+            {
+                foreach (var item in rp)
+                {
+                    if (item.IsSelected)
+                        list.Add(item);
+                }
+                _context.RelatedPages.Add(new RelatedPages { FirstPageId = list.First().PageID, SecondPageId = list.Last().PageID });
+                _context.SaveChanges();
+                return "SUCCESS!";
+            }
+            return "FAIL";
         }
 
         // GET: Pages/Create

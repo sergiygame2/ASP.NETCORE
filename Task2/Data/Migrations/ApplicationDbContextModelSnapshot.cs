@@ -172,27 +172,72 @@ namespace PagesCRUD.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("PagesCRUD.Models.NavLink", b =>
+                {
+                    b.Property<int>("NLId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("NavLinkTitle");
+
+                    b.Property<int>("PageId");
+
+                    b.Property<int>("ParentLinkId");
+
+                    b.Property<string>("Position");
+
+                    b.HasKey("NLId");
+
+                    b.HasIndex("PageId");
+
+                    b.HasIndex("ParentLinkId");
+
+                    b.ToTable("NavLink");
+                });
+
             modelBuilder.Entity("PagesCRUD.Models.Page", b =>
                 {
                     b.Property<int>("PageID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AddedDate")
+                    b.Property<DateTime>("AddedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .IsRequired();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
-                    b.Property<string>("Title");
+                    b.Property<bool>("IsSelected");
 
-                    b.Property<string>("UrlName");
+                    b.Property<string>("Title")
+                        .IsRequired();
+
+                    b.Property<string>("UrlName")
+                        .IsRequired();
 
                     b.HasKey("PageID");
 
                     b.ToTable("Page");
+                });
+
+            modelBuilder.Entity("PagesCRUD.Models.RelatedPages", b =>
+                {
+                    b.Property<int>("RowId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("FirstPageId");
+
+                    b.Property<int>("SecondPageId");
+
+                    b.HasKey("RowId");
+
+                    b.HasIndex("FirstPageId");
+
+                    b.HasIndex("SecondPageId");
+
+                    b.ToTable("RelatedPages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -229,6 +274,32 @@ namespace PagesCRUD.Data.Migrations
                     b.HasOne("PagesCRUD.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PagesCRUD.Models.NavLink", b =>
+                {
+                    b.HasOne("PagesCRUD.Models.Page", "Page")
+                        .WithMany("Links")
+                        .HasForeignKey("PageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PagesCRUD.Models.NavLink", "ParentLink")
+                        .WithMany()
+                        .HasForeignKey("ParentLinkId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PagesCRUD.Models.RelatedPages", b =>
+                {
+                    b.HasOne("PagesCRUD.Models.Page", "FirstPage")
+                        .WithMany()
+                        .HasForeignKey("FirstPageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PagesCRUD.Models.Page", "SecondPage")
+                        .WithMany()
+                        .HasForeignKey("SecondPageId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

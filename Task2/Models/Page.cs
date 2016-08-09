@@ -13,6 +13,8 @@ namespace PagesCRUD.Models
         public List<Page> pages;
         public string pageTitle { get; set; }
 
+        public IEnumerable<Page> checkdeItems { get; set; }
+
         public int numberOfObjectsPerPage { get; set; }
         public int pagesAmount { get; set; }
         public int currentPage { get; set; }
@@ -36,5 +38,9 @@ namespace PagesCRUD.Models
         public string Content { get; set; }
         [Required]
         public DateTime AddedDate { get; set; }
+
+        public bool IsSelected { get; set; }
+
+        public virtual List<NavLink> Links { get; set; }
     } 
 }

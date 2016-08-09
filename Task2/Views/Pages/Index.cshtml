@@ -20,6 +20,7 @@
     <table class="table">
             <thead>
                 <tr>
+                    <th></th>
                     <th>
                         @Html.ActionLink("UrlName", "Index", new { sortOrder = ViewBag.UrlSortParm })
                     </th>
@@ -39,42 +40,51 @@
                 </tr>
             </thead>
         <tbody>
-    @foreach (var item in Model.pages)
+
+           
+            @foreach (var item in Model.pages)
             {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UrlName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddedDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PageID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PageID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PageID">Delete</a>
-            </td>
-        </tr>
-    }
-    </tbody>
+                    <tr>
+                        <td>@Html.CheckBoxFor(modelItem => item.IsSelected) </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UrlName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AddedDate)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.PageID">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.PageID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.PageID">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+</tbody>
+
 </table>
+<form asp-action="CheckBoxRP">
+    <input type="submit" value="Save related pages" class="btn btn-default" />
+</form>
+<br>
     <p>Total pages: @Model.pagesAmount</p>
     <ul class="pagination">
         @for (int i = 0; i < Model.pagesLinks; i++)
         {
-            <li id="@(i+1)" >@Html.ActionLink(""+(i+1), "Index", new { currPage = (i+1) })</li>
+            <li id="@(i+1)">@Html.ActionLink("" + (i + 1), "Index", new { currPage = (i + 1) })</li>
         }
 
     </ul>
-<script>
-    var elem = document.getElementById(@Model.currentPage);
-    elem.classList.add("active");
-</script>
+    <script>
+        var elem = document.getElementById(@Model.currentPage);
+        elem.classList.add("active");
+    </script>

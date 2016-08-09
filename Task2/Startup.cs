@@ -13,6 +13,7 @@ using PagesCRUD.Data;
 using PagesCRUD.Models;
 using PagesCRUD.Services;
 
+
 namespace PagesCRUD
 {
     public class Startup
@@ -52,6 +53,8 @@ namespace PagesCRUD
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            services.AddSingleton<IPageRepository, PageRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
